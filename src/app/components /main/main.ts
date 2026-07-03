@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms'
 
 import { OpenDndService } from '../../open-dnd-service';
@@ -12,29 +12,34 @@ import { OpenDndService } from '../../open-dnd-service';
 
 export class Main {
 
-  constructor(private apiHandler: OpenDndService ) {}
+  constructor(private apiHandler: OpenDndService, private cdr: ChangeDetectorRef ) {}
 
   inputType :string = "tag";
   tagSearchTextInput :string = "";
-  returnedSpells :Array<any> = [];
+  returnedSpells :any = [];
   pageDisplayIndex :number = 2137;
   specificSpell :any = {};
 
   spellName :string = "";
   spellClass :string = "";
   spellLevel :number = 2137;
+
   ngOnInit() {  
     this.apiHandler.getSpells();
   
     this.apiHandler.$returnedSpells.subscribe((value :any) => {
       this.returnedSpells = value;
+      this.cdr.detectChanges();
     })
-  
+
     this.apiHandler.$specificSpell.subscribe((value :any) => {
       this.specificSpell = value;
+      this.cdr.detectChanges();
     })
 
   }
+
+ 
 
   changeSearchType(desiredInput :string) :void {
     if (desiredInput != "tag" && desiredInput != "box") {
@@ -66,7 +71,7 @@ export class Main {
   }
 
   async fetchSpecificSpell(spellIndex :string) :Promise<void> {
-      await this.apiHandler.getSpecificSpell(spellIndex)
+    await this.apiHandler.getSpecificSpell(spellIndex)
   }
 
 }

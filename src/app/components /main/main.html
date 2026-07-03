@@ -29,15 +29,15 @@
 
     <section>
       <article id="left_section">
-        @for (spell of returnedSpells; track $index) {
+        @for (spell of (returnedSpells) ; track $index) {
           <button (click)="fetchSpecificSpell(spell.index)">
-            <p>Name: {{spell.name}}</p>
+            <p>{{spell.name}}</p>
           </button>
         }
       </article>
       
       <article id="right_section">
-        @if (specificSpell != {}) {
+        @if (specificSpell) {
           <h2>{{specificSpell.name}}</h2>
           <section id="spell_description">
             <p>Level: {{specificSpell.level}}</p>
@@ -47,7 +47,6 @@
             <p>Duration: {{specificSpell.duration}}</p>
             <p>Concentration: {{specificSpell.concentration}}</p>
             <p>Casting Time: {{specificSpell.casting_time}}</p>
-            <p></p>
             <p>Desc: {{specificSpell.desc}}</p>
           </section>
         }
