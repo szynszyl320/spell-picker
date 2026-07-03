@@ -1,0 +1,44 @@
+<header>
+  <h2>Spell Picker</h2>
+</header>
+<main> 
+  <nav>
+    <button (click)="changeSearchType('tag')">Tag Search</button>
+    <button (click)="changeSearchType('box')">Box Search</button>
+  </nav>
+  
+  <section>
+    @if (inputType == 'tag') {
+    
+      <label>Search for spells: <input type="text" name="spellTags" id="spellTags" [(ngModel)]="tagSearchTextInput"></label>
+      <button (click)="submitTagSearch()">Search</button>
+    
+    } @else if (inputType == 'box') {
+    
+      <label>Spell name: <input type="text" name="spellName" id="spellName" [(ngModel)]="spellName"></label>
+      <label>Spell level: <input type="number" name="spellLevel" id="spellLevel" [(ngModel)]="spellLevel"></label>
+      <label>Spell class: <input type="text" name="spellClass" id="spellClass" [(ngModel)]="spellClass"></label>
+      <button (click)="submitBoxSearch()">Search</button>
+
+    } @else {
+      <p>Failed to display an input type</p>
+    }
+  </section>
+
+  <section>
+    <article>
+      @for (spell of returnedSpells; track $index) {
+        <button>
+          <p>Name: {{spell.name}}</p>
+        </button>
+      }
+    </article>
+    
+    <article>
+      
+    </article>
+  </section>
+
+
+
+</main>

@@ -1,0 +1,62 @@
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms'
+
+import { OpenDndService } from '../../open-dnd-service';
+
+@Component({
+  selector: 'app-main',
+  imports: [FormsModule],
+  templateUrl: './main.html',
+  styleUrl: './main.css',
+})
+
+export class Main {
+
+  constructor(private apiHandler: OpenDndService ) {}
+
+  inputType :string = "tag";
+  tagSearchTextInput :string = "";
+  returnedSpells :Array<any> = [];
+  pageDisplayIndex :number = 2137;
+
+  spellName :string = "";
+  spellClass :string = "";
+  spellLevel :number = 2137;
+  ngOnInit() {  
+    this.apiHandler.getSpells();
+    this.apiHandler.$returnedSpells.subscribe((value :any) => {
+      this.returnedSpells = value;
+    })
+  
+  }
+
+  changeSearchType(desiredInput :string) :void {
+    if (desiredInput != "tag" && desiredInput != "box") {
+      console.log("Failed to pick a suitable search");
+      return;
+    } else {
+      this.inputType = desiredInput;
+    }
+  }
+
+  submitTagSearch() :void {
+    this.apiHandler.parseFilters(this.tagSearchTextInput);
+  }
+
+  submitBoxSearch() :void {
+    this.apiHandler.inputBoxFilters(this.spellName, this.spellClass, this.spellLevel)
+  }
+
+  changeDisplayedPage(change :number) :void {
+    
+    console.log(this.returnedSpells[this.pageDisplayIndex]);
+    
+    this.pageDisplayIndex += change
+    if(this.pageDisplayIndex < 0) {
+      this.pageDisplayIndex = 0
+    } else if (this.pageDisplayIndex > this.returnedSpells.length) {
+      this.pageDisplayIndex = this.returnedSpells.length-1
+    }
+  }
+
+}
