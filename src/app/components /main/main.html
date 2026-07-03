@@ -1,44 +1,61 @@
-<header>
-  <h2>Spell Picker</h2>
-</header>
-<main> 
-  <nav>
-    <button (click)="changeSearchType('tag')">Tag Search</button>
-    <button (click)="changeSearchType('box')">Box Search</button>
-  </nav>
-  
-  <section>
-    @if (inputType == 'tag') {
-    
-      <label>Search for spells: <input type="text" name="spellTags" id="spellTags" [(ngModel)]="tagSearchTextInput"></label>
-      <button (click)="submitTagSearch()">Search</button>
-    
-    } @else if (inputType == 'box') {
-    
-      <label>Spell name: <input type="text" name="spellName" id="spellName" [(ngModel)]="spellName"></label>
-      <label>Spell level: <input type="number" name="spellLevel" id="spellLevel" [(ngModel)]="spellLevel"></label>
-      <label>Spell class: <input type="text" name="spellClass" id="spellClass" [(ngModel)]="spellClass"></label>
-      <button (click)="submitBoxSearch()">Search</button>
+<div id="container">
+  <header>
+    <h2>Spell Picker</h2>
+  </header>
+  <main> 
+    <article id="nav">
+      <nav>
+        <button (click)="changeSearchType('tag')">Tag Search</button>
+        <button (click)="changeSearchType('box')">Box Search</button>
+      </nav>
+      <section>
+        @if (inputType == 'tag') {
+        
+          <label>Search for spells: <input type="text" name="spellTags" id="spellTags" [(ngModel)]="tagSearchTextInput"></label>
+          <button (click)="submitTagSearch()">Search</button>
+        
+        } @else if (inputType == 'box') {
+        
+          <label>Spell name: <input type="text" name="spellName" id="spellName" [(ngModel)]="spellName"></label>
+          <label>Spell level: <input type="number" name="spellLevel" id="spellLevel" [(ngModel)]="spellLevel"></label>
+          <label>Spell class: <input type="text" name="spellClass" id="spellClass" [(ngModel)]="spellClass"></label>
+          <button (click)="submitBoxSearch()">Search</button>
 
-    } @else {
-      <p>Failed to display an input type</p>
-    }
-  </section>
-
-  <section>
-    <article>
-      @for (spell of returnedSpells; track $index) {
-        <button>
-          <p>Name: {{spell.name}}</p>
-        </button>
-      }
+        } @else {
+          <p>Failed to display an input type</p>
+        }
+      </section>
     </article>
-    
-    <article>
+
+    <section>
+      <article id="left_section">
+        @for (spell of returnedSpells; track $index) {
+          <button (click)="fetchSpecificSpell(spell.index)">
+            <p>Name: {{spell.name}}</p>
+          </button>
+        }
+      </article>
       
-    </article>
-  </section>
+      <article id="right_section">
+        @if (specificSpell != {}) {
+          <h2>{{specificSpell.name}}</h2>
+          <section id="spell_description">
+            <p>Level: {{specificSpell.level}}</p>
+            <p>Attack Type: {{specificSpell.attack_type || "NAN"}}</p>
+            <p>Range: {{specificSpell.range}}</p>
+            <p>Ritual: {{specificSpell.ritual}}</p>
+            <p>Duration: {{specificSpell.duration}}</p>
+            <p>Concentration: {{specificSpell.concentration}}</p>
+            <p>Casting Time: {{specificSpell.casting_time}}</p>
+            <p></p>
+            <p>Desc: {{specificSpell.desc}}</p>
+          </section>
+        }
+      </article>
+    </section>
 
 
 
-</main>
+  </main>
+
+</div>

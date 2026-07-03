@@ -1,0 +1,42 @@
+#container {
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+}
+
+header {
+   text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+
+section {
+    display: flex;
+    gap: 0.5vw;
+}
+
+#left_section {
+    width: 55%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#right_section {
+    width: 45%;
+}
+
+#nav {
+    margin: 2vh;
+    margin-left: 0;
+}
+
+label {
+    display: block;
+}
+
+#spell_description {
+    display: block;
+}

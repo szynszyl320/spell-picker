@@ -18,16 +18,22 @@ export class Main {
   tagSearchTextInput :string = "";
   returnedSpells :Array<any> = [];
   pageDisplayIndex :number = 2137;
+  specificSpell :any = {};
 
   spellName :string = "";
   spellClass :string = "";
   spellLevel :number = 2137;
   ngOnInit() {  
     this.apiHandler.getSpells();
+  
     this.apiHandler.$returnedSpells.subscribe((value :any) => {
       this.returnedSpells = value;
     })
   
+    this.apiHandler.$specificSpell.subscribe((value :any) => {
+      this.specificSpell = value;
+    })
+
   }
 
   changeSearchType(desiredInput :string) :void {
@@ -57,6 +63,10 @@ export class Main {
     } else if (this.pageDisplayIndex > this.returnedSpells.length) {
       this.pageDisplayIndex = this.returnedSpells.length-1
     }
+  }
+
+  async fetchSpecificSpell(spellIndex :string) :Promise<void> {
+      await this.apiHandler.getSpecificSpell(spellIndex)
   }
 
 }

@@ -8,6 +8,7 @@ export class OpenDndService {
     private urlFilters :string = "";
 
     public $returnedSpells :BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>([]);
+    public $specificSpell :BehaviorSubject<any> = new BehaviorSubject<any>({});
 
     parseFilters(filterText :string) :void {
         try {
@@ -65,7 +66,7 @@ export class OpenDndService {
         }
     }
 
-    async getSpells(limit = 50, page = 1) :Promise<void> {
+    async getSpells() :Promise<void> {
         try {
             const response = await fetch(this.url+this.urlFilters);
             
@@ -88,9 +89,20 @@ export class OpenDndService {
         }
     }
 
-    async getSpecificSpell() :Promise<void> {
-        try {
-          
+    async getSpecificSpell(spellIndex :string) :Promise<void> {
+        try {   
+            const response = await fetch(this.url+`/${spellIndex}`);
+
+            if(!response.ok) {
+                throw new Error(`Reponse status: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            this.$specificSpell.next(result)
+            
+            console.log(result);
+
         } catch (error) {
             console.error("Failed to get specific spell", error);
         }
