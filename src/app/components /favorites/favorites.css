@@ -1,4 +1,35 @@
 main {
     display: flex;
     flex-direction: column;
+    gap: 0.5vh;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    padding: 0.5vw;
+    position: relative;
+    font-size: 1.5vh;
+}
+
+button::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
+    top: 10px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-bottom: #805b10 3px solid;
+    pointer-events: none;
+    border-radius: 5px;
+    scale: 0.7;
+}
+
+button:hover {
+    scale: 1.5;
+}
+
+button:active {
+    color: #e3b352a7;
 }

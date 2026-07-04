@@ -1,9 +1,14 @@
 <div id="favorites_container">
   @if (ifFavoritesDisplayed) {
-    <app-favorites></app-favorites>
-    <button (click)="switchFavoritesDisplay()">Close Favorites</button>
+    <div class="scroll_content" animate.enter="unfurl" animate.leave="furl">
+      <app-favorites></app-favorites>
+    
+    <button id="close_button" (click)="switchFavoritesDisplay()">Close Favorites</button>
+    </div>
   } @else {
-    <button (click)="switchFavoritesDisplay()">Display Favorites</button>
+    <button id="open_button" (click)="switchFavoritesDisplay()" animate.enter="display_btn">
+      <span>Display Favorites</span>
+    </button>
   }
 </div>
 
@@ -17,18 +22,22 @@
         <button (click)="changeSearchType('tag')">Tag Search</button>
         <button (click)="changeSearchType('box')">Box Search</button>
       </nav>
-      <section>
+      <section >
         @if (inputType == 'tag') {
         
-          <label>Search for spells: <input type="text" name="spellTags" id="spellTags" [(ngModel)]="tagSearchTextInput"></label>
-          <button (click)="submitTagSearch()">Search</button>
+          <div animate.enter="loadSearchType">
+            <label>Search for spells: <input type="text" name="spellTags" id="spellTags" [(ngModel)]="tagSearchTextInput"></label>
+            <button (click)="submitTagSearch()">Search</button>
+          </div>
         
         } @else if (inputType == 'box') {
         
-          <label>Spell name: <input type="text" name="spellName" id="spellName" [(ngModel)]="spellName"></label>
-          <label>Spell level: <input type="number" name="spellLevel" id="spellLevel" [(ngModel)]="spellLevel"></label>
-          <label>Spell class: <input type="text" name="spellClass" id="spellClass" [(ngModel)]="spellClass"></label>
-          <button (click)="submitBoxSearch()">Search</button>
+          <div animate.enter="loadSearchType">
+            <label>Spell name: <input type="text" name="spellName" id="spellName" [(ngModel)]="spellName"></label>
+            <label>Spell level: <input type="number" name="spellLevel" id="spellLevel" [(ngModel)]="spellLevel"></label>
+            <label>Spell class: <input type="text" name="spellClass" id="spellClass" [(ngModel)]="spellClass"></label>
+            <button (click)="submitBoxSearch()">Search</button>
+          </div>
 
         } @else {
           <p>Failed to display an input type</p>
@@ -36,7 +45,7 @@
       </section>
     </article>
 
-    <section>
+    <section id="main_sections">
       <article id="left_section">
         @for (spell of (returnedSpells) ; track $index) {
           <button (click)="fetchSpecificSpell(spell.index)">
@@ -45,31 +54,49 @@
         }
       </article>
       
-      <article id="right_section">
-        @if (specificSpell) {
-          
-          @if (specificSpell.index in favoritesArray) {
-            <button (click)="removeFromFavorites(specificSpell.index)">Unfavorite</button>
-          } @else {
-            <button (click)="addToFavorites(specificSpell)">Favorite</button>
-          }
+      
+      @if (specificSpell) {
+          <article id="right_section" animate.enter="unfurl">
+            @if (specificSpell.index in favoritesArray) {
+              <button (click)="removeFromFavorites(specificSpell.index)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="gold" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg>
+              </button>
+            } @else {
+              <button (click)="addToFavorites(specificSpell)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg>
+              </button>
+            }
 
-          <h2>{{specificSpell.name}}</h2>
-          <section id="spell_description">
-            <p>Level: {{specificSpell.level}}</p>
-            <p>Attack Type: {{specificSpell.attack_type || "NAN"}}</p>
-            <p>Range: {{specificSpell.range}}</p>
-            <p>Ritual: {{specificSpell.ritual}}</p>
-            <p>Duration: {{specificSpell.duration}}</p>
-            <p>Concentration: {{specificSpell.concentration}}</p>
-            <p>Casting Time: {{specificSpell.casting_time}}</p>
-            <p>Desc: {{specificSpell.desc}}</p>
-          </section>
-        }
-      </article>
+            <h2>{{specificSpell.name}}</h2>
+            <section id="spell_description">
+              <p><span>Level:</span> {{specificSpell.level}}</p>
+              <p><span>Attack Type:</span> {{specificSpell.attack_type || "NAN"}}</p>
+              <p><span>Range:</span> {{specificSpell.range}}</p>
+              <p><span>Ritual:</span> {{specificSpell.ritual}}</p>
+              <p><span>Duration:</span> {{specificSpell.duration}}</p>
+              <p><span>Concentration:</span> {{specificSpell.concentration}}</p>
+              <p><span>Casting Time:</span> {{specificSpell.casting_time}}</p>
+              <p><span>Desc:</span> {{specificSpell.desc}}</p>
+            </section>
+          </article>
+      } @else { 
+       <div style="width: 40%;"></div> 
+      }
+      
     </section>
 
-
+    <svg style="width: 0; height: 0; position: absolute;" aria-hidden="true" focusable="false">
+      <filter id="tattered-edge">
+        <!-- Generate random noise -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves="5" result="noise" />
+        <!-- Apply the noise to distort the edges of the element -->
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="30" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
 
   </main>
 
