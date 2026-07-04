@@ -1,28 +1,39 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms'
 
-import { OpenDndService } from '../../open-dnd-service';
+import { OpenDndService } from '../../services/open-dnd-service';
+import { LocalSave } from '../../services/local-save';
+import { AssocArray } from '../../assoc-array';
+
+import { Favorites } from '../favorites/favorites';
 
 @Component({
   selector: 'app-main',
-  imports: [FormsModule],
+  imports: [FormsModule, Favorites],
   templateUrl: './main.html',
   styleUrl: './main.css',
 })
 
 export class Main {
 
-  constructor(private apiHandler: OpenDndService, private cdr: ChangeDetectorRef ) {}
+  constructor(
+    private apiHandler: OpenDndService, 
+    private cdr: ChangeDetectorRef, 
+    private localSaveHandler: LocalSave
+  ) {}
 
   inputType :string = "tag";
   tagSearchTextInput :string = "";
   returnedSpells :any = [];
-  pageDisplayIndex :number = 2137;
   specificSpell :any = {};
 
   spellName :string = "";
   spellClass :string = "";
   spellLevel :number = 2137;
+
+  favoritesArray :AssocArray = {};
+
+  ifFavoritesDisplayed :boolean = false;
 
   ngOnInit() {  
     this.apiHandler.getSpells();
@@ -37,16 +48,23 @@ export class Main {
       this.cdr.detectChanges();
     })
 
-  }
+    this.localSaveHandler.$Favorites.subscribe((value :AssocArray) => {
+      this.favoritesArray = value;
+    })
 
- 
+    this.localSaveHandler.$InputType.subscribe((value :string) => {
+      this.inputType = value;
+    })
+  }
 
   changeSearchType(desiredInput :string) :void {
     if (desiredInput != "tag" && desiredInput != "box") {
       console.log("Failed to pick a suitable search");
       return;
     } else {
-      this.inputType = desiredInput;
+      this.localSaveHandler.changeInputType(desiredInput);
+
+      this.localSaveHandler.saveDataToLocalStorage();
     }
   }
 
@@ -58,20 +76,24 @@ export class Main {
     this.apiHandler.inputBoxFilters(this.spellName, this.spellClass, this.spellLevel)
   }
 
-  changeDisplayedPage(change :number) :void {
-    
-    console.log(this.returnedSpells[this.pageDisplayIndex]);
-    
-    this.pageDisplayIndex += change
-    if(this.pageDisplayIndex < 0) {
-      this.pageDisplayIndex = 0
-    } else if (this.pageDisplayIndex > this.returnedSpells.length) {
-      this.pageDisplayIndex = this.returnedSpells.length-1
-    }
-  }
-
   async fetchSpecificSpell(spellIndex :string) :Promise<void> {
     await this.apiHandler.getSpecificSpell(spellIndex)
+  }
+
+  addToFavorites(spell :any) :void {
+    this.localSaveHandler.addToFavorites(spell);
+
+    this.localSaveHandler.saveDataToLocalStorage();
+  }
+
+  removeFromFavorites(spellIndex :string) :void {
+    this.localSaveHandler.removeFromFavorites(spellIndex);
+
+    this.localSaveHandler.saveDataToLocalStorage();
+  }
+
+  switchFavoritesDisplay() :void {
+    this.ifFavoritesDisplayed = !this.ifFavoritesDisplayed;
   }
 
 }

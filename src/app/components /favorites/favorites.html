@@ -1,0 +1,7 @@
+<main>
+    @for (spell of favoritesKeys; track $index) {
+        <button (click)="displaySpell(spell)">
+            {{favoritesArray[spell].name}}
+        </button>
+    }
+</main>

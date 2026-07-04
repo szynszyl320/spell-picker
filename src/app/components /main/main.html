@@ -1,3 +1,12 @@
+<div id="favorites_container">
+  @if (ifFavoritesDisplayed) {
+    <app-favorites></app-favorites>
+    <button (click)="switchFavoritesDisplay()">Close Favorites</button>
+  } @else {
+    <button (click)="switchFavoritesDisplay()">Display Favorites</button>
+  }
+</div>
+
 <div id="container">
   <header>
     <h2>Spell Picker</h2>
@@ -38,6 +47,13 @@
       
       <article id="right_section">
         @if (specificSpell) {
+          
+          @if (specificSpell.index in favoritesArray) {
+            <button (click)="removeFromFavorites(specificSpell.index)">Unfavorite</button>
+          } @else {
+            <button (click)="addToFavorites(specificSpell)">Favorite</button>
+          }
+
           <h2>{{specificSpell.name}}</h2>
           <section id="spell_description">
             <p>Level: {{specificSpell.level}}</p>
