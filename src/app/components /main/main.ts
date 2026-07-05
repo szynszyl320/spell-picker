@@ -35,6 +35,8 @@ export class Main {
 
   ifFavoritesDisplayed :boolean = false;
 
+  areHintsDisplayed :boolean = false;
+
   ngOnInit() {  
     this.apiHandler.getSpells();
   
@@ -94,6 +96,10 @@ export class Main {
 
   switchFavoritesDisplay() :void {
     this.ifFavoritesDisplayed = !this.ifFavoritesDisplayed;
+  }
+
+  switchHintsDisplayed() :void {
+    this.areHintsDisplayed = !this.areHintsDisplayed;
   }
 
 }
