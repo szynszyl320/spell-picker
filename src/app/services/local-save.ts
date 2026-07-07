@@ -6,13 +6,17 @@ import { AssocArray } from '../assoc-array';
 @Service()
 export class LocalSave {
 
+    //Array containing favorite spells of the user.
     public $Favorites :BehaviorSubject<AssocArray> = new BehaviorSubject<AssocArray>({});
+    
+    //Variable used to 'remember' which input method the user chosen.
     public $InputType :BehaviorSubject<string> = new BehaviorSubject<string>('tag');
 
     constructor () {
         this.loadDataFromLocalStorage();
     }
 
+    //Loads user data from local storage. Upon finding none, simply skips and allows the default values to persist. 
     loadDataFromLocalStorage() :void {
         try {
             const localStorageItem = localStorage.getItem("SpellPickerMainData");
@@ -30,6 +34,7 @@ export class LocalSave {
         }
     }
 
+    //Saves user data to local storage.
     saveDataToLocalStorage() :void {
         try {
             const DataToBeSaved = {
@@ -45,6 +50,7 @@ export class LocalSave {
         }
     }
 
+    //'Pushes' a new spell into the $Favorites assoc array. 
     addToFavorites(spell :any) :void {
         try {
             let oldArray :AssocArray = this.$Favorites.getValue();
@@ -62,6 +68,7 @@ export class LocalSave {
         }
     }
 
+    //Deletes a key along with an object from the $Favorites assoc Array. 
     removeFromFavorites(spellIndex :string) :void {
         try {
             let oldArray :AssocArray = this.$Favorites.getValue();
@@ -79,6 +86,7 @@ export class LocalSave {
         }
     }
 
+    //Switches the input method used by the user. 
     changeInputType(inputType :string) :void {
         try {
             if (inputType) {
