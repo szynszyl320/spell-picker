@@ -129,3 +129,22 @@
     </svg>
   </a>
 </footer>
+
+<svg style="width: 0; height: 0; position: absolute;" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="wood-grain" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.002 0.035" numOctaves="4" result="noise" />
+      
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="30" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+
+    <linearGradient id="wood-rings" x1="0" y1="0" x2="0" y2="18" gradientUnits="userSpaceOnUse" spreadMethod="reflect">
+      <stop offset="0%" stop-color="#9C6631" />
+      <stop offset="40%" stop-color="#B57A42" />
+      <stop offset="80%" stop-color="#8A5223" />
+      <stop offset="100%" stop-color="#724119" />
+    </linearGradient>
+  </defs>
+
+  <rect width="100%" height="100%" fill="url(#wood-rings)" filter="url(#wood-grain)" />
+</svg>

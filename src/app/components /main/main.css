@@ -5,14 +5,41 @@
     #FFCF71
 */
 
+
 #container {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 1vh;
     padding: 40px;
-    z-index: 1;
+    isolation: isolate;
     margin: 0;
+    transform-origin: top center; 
+    
+    
+    /* Variables */
+    --button-background-color: #f4e4bc;
+    --letter-color: black;
+    --button-shadows: 
+        inset 0 0 10px rgba(99, 47, 9, 0.4), 
+        inset 20px 0 70px rgba(87, 43, 10, 0.3), 
+        inset -20px 0 40px rgba(75, 32, 2, 0.492);
+}
+
+#container::before {
+    content: "";
+    position: absolute;
+    inset: 0;    
+    z-index: -1;  
+    filter: url(#wood-grain) drop-shadow(3px 5px 8px rgba(0,0,0,0.3));
+    background: repeating-linear-gradient(
+        180deg,
+        #744c24 0px,
+        #8e6035 4px,
+        #673d1a 9px,
+        #603715 13px,
+        #794f25 18px
+    );
 }
 
 /* ==================================================================================================================================================== */
@@ -23,12 +50,16 @@ header {
     margin-right: auto;
     text-align: center;
     padding: 20px;
-    border-top: #FFCF71 3px solid;
-    border-bottom: #FFCF71 3px solid;
+    color: var(--letter-color);
+    border-top: black 3px solid;
+    border-bottom: black 3px solid;
     border-radius: 5px;
     position: relative;
     z-index: 1;
-    font-size: 1vw;
+    font-size: 2vw;
+    /* background-color: rgba(255, 255, 255, 0.05); */
+    background-color: var(--button-background-color);
+    box-shadow: var(--button-shadows);
 }
 
 header::before {
@@ -39,8 +70,8 @@ header::before {
     left: 10px;
     right: 10px;
     bottom: 10px;
-    border-top: #FFCF71 3px solid;
-    border-bottom: #FFCF71 3px solid;
+    border-top: #000000 3px solid;
+    border-bottom: #000000 3px solid;
     pointer-events: none;
     border-radius: 5px;
 }
@@ -61,8 +92,6 @@ main {
     gap: 1vh;
 }
 
-/*  */
-
 #nav nav {
     display: flex;
     gap: 0.5vw
@@ -71,7 +100,9 @@ main {
 #nav nav button {
     padding: 0.4vw;
     border-radius: 5px;
-    background-color: #B6771D;
+    background-color: var(--button-background-color);
+    box-shadow: var(--button-shadows);
+    color: var(--letter-color);
     border: 1.5px #FFCF71 solid;
     font-size: medium;
 } 
@@ -82,8 +113,6 @@ main {
     background-color: #c68426;
 }
 
-/*  */
-
 #nav section {
     position: relative;
     display: flex;
@@ -91,32 +120,22 @@ main {
     z-index: 1;
     padding: 1vw;
     border-radius: 10px;
-    border: #ffd07139 1.5px solid;
-    font-size: 2vh;
-    align-items: center;
-}
-
-#nav section::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
     border: 1px solid #FFCF71;
-    background-color: #a7703e;;
-    pointer-events: none;
-    border-radius: 5px;
+    background-color: #a7703e;
+    font-size: 2.5vh;
+    align-items: center;
 }
 
 #nav section button {
     padding: 0.4vw;
     border-radius: 5px;
-    background-color: #d68f2c;
+    background-color: var(--button-background-color);
+    color: var(--letter-color);
+    box-shadow: var(--button-shadows);
     font-size: medium;
     border: none;
     margin-left: 5px;
+    
 } 
 
 #nav section button:hover {
@@ -135,6 +154,7 @@ main {
     border-radius: 5px;
     padding: 5px;
     font-size: medium;
+    color: black;
 }
 
 .loadSearchType {
@@ -178,10 +198,12 @@ main {
     flex-grow: 1;
     flex-basis: 100px;
     padding: 0.2vw;
-    background-color: #B6771D;
+    background-color: var(--button-background-color);
+    color: var(--letter-color);
     border: 1.5px #FFCF71 solid;
     font-size: medium;
     border-radius: 5px;
+    box-shadow: var(--button-shadows)
 }
 
 #left_section button:hover {
@@ -216,8 +238,8 @@ main {
     box-shadow: 
         inset 0 0 30px rgba(139, 69, 19, 0.4),  
         inset 20px 0 40px rgba(139, 69, 19, 0.3), 
-        inset -20px 0 40px rgba(139, 69, 19, 0.3); 
-    filter: url(#tattered-edge) drop-shadow(3px 5px 5px rgba(0,0,0,0.3));
+        inset -20px 0 40px rgba(139, 69, 19, 0.3);
+    filter: url(#tattered-edge) drop-shadow(3px 5px 8px rgba(0,0,0,0.3));
 }
 
 #right_section button {
